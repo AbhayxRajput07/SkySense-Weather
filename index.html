@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkySense – AI Weather</title>
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Icons (Remixicon) -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- Top Bar -->
+    <header class="top-bar">
+      <div class="branding">
+        <i class="ri-sun-foggy-line branding-icon"></i>
+        <div>
+          <h1 class="app-name">SkySense</h1>
+          <p class="app-tagline">AI-powered weather insights</p>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button class="chip chip-outline">
+          <i class="ri-map-pin-line"></i>
+          <span>Use my location</span>
+        </button>
+        <button class="icon-button">
+          <i class="ri-settings-3-line"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Layout -->
+    <main class="layout">
+      <!-- LEFT: Weather content -->
+      <section class="weather-panel">
+        <!-- Search -->
+        <form class="search-bar" id="search-form">
+          <div class="search-input-wrapper">
+            <i class="ri-search-line"></i>
+            <input
+              type="text"
+              id="city-input"
+              placeholder="Search city (e.g. Mumbai, London)"
+              autocomplete="off"
+            />
+          </div>
+          <button type="submit" class="primary-btn">
+            <span>Get Weather</span>
+            <i class="ri-arrow-right-line"></i>
+          </button>
+        </form>
+
+        <!-- Current Weather Card -->
+        <section class="card current-weather-card">
+          <div class="current-header">
+            <div>
+              <p class="label">Current location</p>
+              <h2 class="city-name" id="city-name">New York, US</h2>
+              <p class="date" id="current-date">Wednesday, 26 Nov</p>
+            </div>
+            <div class="current-icon-wrapper">
+              <i class="ri-sun-line weather-icon-big"></i>
+              <p class="condition" id="current-condition">Sunny</p>
+            </div>
+          </div>
+
+          <div class="current-main">
+            <div class="temp-block">
+              <span class="temp-now" id="temp-now">27°</span>
+              <div class="temp-range">
+                <span>H: <span id="temp-max">30°</span></span>
+                <span>L: <span id="temp-min">22°</span></span>
+              </div>
+            </div>
+
+            <div class="current-metrics">
+              <div class="metric">
+                <i class="ri-drop-line"></i>
+                <div>
+                  <p class="metric-label">Humidity</p>
+                  <p class="metric-value" id="humidity">58%</p>
+                </div>
+              </div>
+              <div class="metric">
+                <i class="ri-windy-line"></i>
+                <div>
+                  <p class="metric-label">Wind</p>
+                  <p class="metric-value" id="wind">9 km/h</p>
+                </div>
+              </div>
+              <div class="metric">
+                <i class="ri-eye-line"></i>
+                <div>
+                  <p class="metric-label">Visibility</p>
+                  <p class="metric-value" id="visibility">10 km</p>
+                </div>
+              </div>
+              <div class="metric">
+                <i class="ri-bar-chart-2-line"></i>
+                <div>
+                  <p class="metric-label">Pressure</p>
+                  <p class="metric-value" id="pressure">1012 hPa</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Hourly Forecast -->
+        <section class="card">
+          <div class="card-header">
+            <h3>Next 12 hours</h3>
+            <span class="label">Local time</span>
+          </div>
+          <div class="hourly-list" id="hourly-list">
+            <!-- JS will fill -->
+          </div>
+        </section>
+
+        <!-- Daily Forecast -->
+        <section class="card">
+          <div class="card-header">
+            <h3>7-day outlook</h3>
+            <span class="label">AI-ready data</span>
+          </div>
+          <div class="daily-list" id="daily-list">
+            <!-- JS will fill -->
+          </div>
+        </section>
+      </section>
+
+      <!-- RIGHT: AI panel -->
+      <aside class="ai-panel card">
+        <div class="card-header">
+          <h3>SkySense AI</h3>
+          <span class="label">Smart suggestions</span>
+        </div>
+
+        <div class="ai-messages" id="ai-messages">
+          <div class="ai-message ai-message-bot">
+            <p>
+              Hi, I’m your weather assistant. Ask me things like:
+            </p>
+            <ul>
+              <li>“What should I wear today?”</li>
+              <li>“Is it a good time for a run?”</li>
+              <li>“Explain today’s weather in simple words.”</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="ai-input-area">
+          <div class="chip-row">
+            <button class="chip chip-filled quick-question">
+              Outfit suggestion
+            </button>
+            <button class="chip chip-filled quick-question">
+              Outdoor plans
+            </button>
+            <button class="chip chip-outline quick-question">
+              Weather summary
+            </button>
+          </div>
+          <div class="ai-input-wrapper">
+            <textarea
+              id="ai-input"
+              rows="2"
+              placeholder="Ask anything about today’s weather..."
+            ></textarea>
+            <button class="icon-button primary-icon-button" id="ai-send-btn">
+              <i class="ri-send-plane-2-line"></i>
+            </button>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
