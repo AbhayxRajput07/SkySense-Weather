@@ -1,0 +1,22 @@
+{
+  "name": "SkySense Weather",
+  "short_name": "SkySense",
+  "description": "Professional weather intelligence with AI-assisted guidance.",
+  "start_url": "./app/index.html",
+  "display": "standalone",
+  "background_color": "#081120",
+  "theme_color": "#081120",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
