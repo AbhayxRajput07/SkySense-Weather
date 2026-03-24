@@ -23,45 +23,45 @@
 </head>
 <body>
   <div class="app">
-    <header class="top-bar">
+    <header class="top-bar card">
       <div class="branding">
         <i class="ri-sun-foggy-line branding-icon"></i>
         <div>
           <h1 class="app-name">SkySense</h1>
-          <p class="app-tagline">Weather Intelligence Dashboard</p>
+          <p class="app-tagline">Clean weather intelligence workspace</p>
         </div>
       </div>
 
+      <form class="search-bar" id="search-form">
+        <div class="search-input-wrapper">
+          <i class="ri-search-line"></i>
+          <input
+            type="text"
+            id="city-input"
+            placeholder="Search city (e.g. Mumbai, London)"
+            autocomplete="off"
+          />
+        </div>
+        <button type="submit" class="primary-btn">
+          <span>Get Weather</span>
+          <i class="ri-arrow-right-line"></i>
+        </button>
+      </form>
+
       <div class="top-actions">
-        <a class="chip chip-outline" href="../index.html">
-          <i class="ri-arrow-left-line"></i>
-          <span>Back to Landing</span>
-        </a>
         <button class="chip chip-outline" id="location-btn" type="button">
           <i class="ri-map-pin-line"></i>
           <span id="location-btn-text">Use my location</span>
         </button>
+        <a class="chip chip-outline" href="../index.html">
+          <i class="ri-arrow-left-line"></i>
+          <span>Back</span>
+        </a>
       </div>
     </header>
 
     <main class="layout">
       <section class="weather-panel">
-        <form class="search-bar" id="search-form">
-          <div class="search-input-wrapper">
-            <i class="ri-search-line"></i>
-            <input
-              type="text"
-              id="city-input"
-              placeholder="Search city (e.g. Mumbai, London)"
-              autocomplete="off"
-            />
-          </div>
-          <button type="submit" class="primary-btn">
-            <span>Get Weather</span>
-            <i class="ri-arrow-right-line"></i>
-          </button>
-        </form>
-
         <section class="card current-weather-card">
           <div class="current-header">
             <div>
@@ -120,37 +120,34 @@
         <section class="card">
           <div class="card-header">
             <h3>Next 12 hours</h3>
-            <span class="label">Local time</span>
+            <span class="label">Local timeline</span>
           </div>
           <div class="hourly-list" id="hourly-list"></div>
         </section>
 
         <section class="card">
           <div class="card-header">
-            <h3>7-day outlook</h3>
-            <span class="label">AI-ready data</span>
+            <h3>5-day outlook</h3>
+            <span class="label">Forecast overview</span>
           </div>
           <div class="daily-list" id="daily-list"></div>
         </section>
       </section>
 
-      <aside class="ai-panel card">
-        <div class="card-header">
-          <h3>SkySense AI</h3>
-          <span class="label">Smart suggestions</span>
-        </div>
-
-        <section class="widget-settings" aria-label="Home screen weather card settings">
+      <aside class="side-panel">
+        <section class="card widget-settings" aria-label="Home screen weather card settings">
+          <div class="card-header">
+            <h3>Home Screen Cards</h3>
+            <span class="label">Notifications</span>
+          </div>
           <div class="widget-settings-head">
-            <p class="widget-title">Home Screen Weather Card</p>
+            <p class="widget-title">Weather card updates</p>
             <label class="switch" for="widget-toggle">
               <input type="checkbox" id="widget-toggle" />
               <span class="switch-slider"></span>
             </label>
           </div>
-          <p class="widget-note">
-            Turn this on to get weather card notifications (time, temp, cloud type) like a quick widget.
-          </p>
+          <p class="widget-note">Get quick weather cards with time, temperature, and condition.</p>
           <div class="widget-controls">
             <label for="widget-frequency">Update every</label>
             <select id="widget-frequency">
@@ -163,34 +160,41 @@
           <p class="widget-status" id="widget-status">Widget notifications are off.</p>
         </section>
 
-        <div class="ai-messages" id="ai-messages">
-          <div class="ai-message ai-message-bot">
-            <p>Hi, I am your weather assistant. Ask me things like:</p>
-            <ul>
-              <li>What should I wear today?</li>
-              <li>Is it a good time for a run?</li>
-              <li>Explain today weather in simple words.</li>
-            </ul>
+        <section class="ai-panel card">
+          <div class="card-header">
+            <h3>SkySense AI Assistant</h3>
+            <span class="label">Practical guidance</span>
           </div>
-        </div>
 
-        <div class="ai-input-area">
-          <div class="chip-row">
-            <button class="chip chip-filled quick-question" type="button">Outfit suggestion</button>
-            <button class="chip chip-filled quick-question" type="button">Outdoor plans</button>
-            <button class="chip chip-outline quick-question" type="button">Weather summary</button>
+          <div class="ai-messages" id="ai-messages">
+            <div class="ai-message ai-message-bot">
+              <p>Hi, I am your weather assistant. Ask me things like:</p>
+              <ul>
+                <li>What should I wear today?</li>
+                <li>Is it a good time for a run?</li>
+                <li>Explain today weather in simple words.</li>
+              </ul>
+            </div>
           </div>
-          <div class="ai-input-wrapper">
-            <textarea
-              id="ai-input"
-              rows="2"
-              placeholder="Ask anything about today's weather..."
-            ></textarea>
-            <button class="icon-button primary-icon-button" id="ai-send-btn" type="button">
-              <i class="ri-send-plane-2-line"></i>
-            </button>
+
+          <div class="ai-input-area">
+            <div class="chip-row">
+              <button class="chip chip-filled quick-question" type="button">Outfit suggestion</button>
+              <button class="chip chip-filled quick-question" type="button">Outdoor plans</button>
+              <button class="chip chip-outline quick-question" type="button">Weather summary</button>
+            </div>
+            <div class="ai-input-wrapper">
+              <textarea
+                id="ai-input"
+                rows="2"
+                placeholder="Ask anything about today's weather..."
+              ></textarea>
+              <button class="icon-button primary-icon-button" id="ai-send-btn" type="button">
+                <i class="ri-send-plane-2-line"></i>
+              </button>
+            </div>
           </div>
-        </div>
+        </section>
       </aside>
     </main>
   </div>
