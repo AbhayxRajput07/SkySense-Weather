@@ -140,6 +140,29 @@
           <span class="label">Smart suggestions</span>
         </div>
 
+        <section class="widget-settings" aria-label="Home screen weather card settings">
+          <div class="widget-settings-head">
+            <p class="widget-title">Home Screen Weather Card</p>
+            <label class="switch" for="widget-toggle">
+              <input type="checkbox" id="widget-toggle" />
+              <span class="switch-slider"></span>
+            </label>
+          </div>
+          <p class="widget-note">
+            Turn this on to get weather card notifications (time, temp, cloud type) like a quick widget.
+          </p>
+          <div class="widget-controls">
+            <label for="widget-frequency">Update every</label>
+            <select id="widget-frequency">
+              <option value="30">30 min</option>
+              <option value="60" selected>1 hour</option>
+              <option value="180">3 hours</option>
+            </select>
+            <button class="chip chip-filled" id="test-widget-notification" type="button">Test now</button>
+          </div>
+          <p class="widget-status" id="widget-status">Widget notifications are off.</p>
+        </section>
+
         <div class="ai-messages" id="ai-messages">
           <div class="ai-message ai-message-bot">
             <p>Hi, I am your weather assistant. Ask me things like:</p>

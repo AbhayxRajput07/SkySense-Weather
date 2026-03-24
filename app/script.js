@@ -269,9 +269,164 @@ const aiMessages = document.getElementById("ai-messages");
 const aiInput = document.getElementById("ai-input");
 const aiSendBtn = document.getElementById("ai-send-btn");
 const quickButtons = document.querySelectorAll(".quick-question");
+const widgetToggle = document.getElementById("widget-toggle");
+const widgetFrequency = document.getElementById("widget-frequency");
+const widgetStatus = document.getElementById("widget-status");
+const testWidgetNotificationBtn = document.getElementById("test-widget-notification");
 
 let lastCurrentWeather = null;
 let lastForecastData = null;
+const WIDGET_PREFS_KEY = "skysenseWidgetPrefs";
+let widgetPrefs = {
+  enabled: false,
+  frequencyMinutes: 60,
+  lastNotificationAt: 0
+};
+
+function loadWidgetPrefs() {
+  try {
+    const raw = localStorage.getItem(WIDGET_PREFS_KEY);
+    if (!raw) return;
+    const parsed = JSON.parse(raw);
+    widgetPrefs.enabled = Boolean(parsed.enabled);
+    widgetPrefs.frequencyMinutes = Number(parsed.frequencyMinutes) || 60;
+    widgetPrefs.lastNotificationAt = Number(parsed.lastNotificationAt) || 0;
+  } catch (err) {
+    console.warn("Widget preferences could not be loaded:", err);
+  }
+}
+
+function saveWidgetPrefs() {
+  localStorage.setItem(WIDGET_PREFS_KEY, JSON.stringify(widgetPrefs));
+}
+
+function updateWidgetStatus(text) {
+  if (widgetStatus) {
+    widgetStatus.textContent = text;
+  }
+}
+
+async function sendWeatherWidgetNotification(force = false) {
+  if (!lastCurrentWeather) return;
+  if (!("Notification" in window)) return;
+  if (Notification.permission !== "granted") return;
+  if (!force && !widgetPrefs.enabled) return;
+
+  const now = Date.now();
+  const nextAllowedAt = widgetPrefs.lastNotificationAt + widgetPrefs.frequencyMinutes * 60 * 1000;
+  if (!force && now < nextAllowedAt) return;
+
+  const city = `${lastCurrentWeather.name}, ${lastCurrentWeather.sys.country}`;
+  const temp = Math.round(lastCurrentWeather.main.temp);
+  const mainWeather = lastCurrentWeather.weather?.[0]?.main || "Clear";
+  const description = lastCurrentWeather.weather?.[0]?.description || mainWeather;
+  const localTime = new Date().toLocaleTimeString("en-IN", {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+
+  const title = `SkySense ${localTime}`;
+  const body = `${city} | ${temp}°C | ${description}`;
+
+  try {
+    const registration = await navigator.serviceWorker.getRegistration();
+    if (registration) {
+      await registration.showNotification(title, {
+        body,
+        icon: "../icon-192.png",
+        badge: "../icon-192.png",
+        tag: "skysense-home-weather",
+        renotify: true,
+        data: { url: "/app/index.html" }
+      });
+    } else {
+      // Fallback if SW is unavailable.
+      new Notification(title, {
+        body,
+        icon: "../icon-192.png"
+      });
+    }
+
+    widgetPrefs.lastNotificationAt = now;
+    saveWidgetPrefs();
+    updateWidgetStatus(`Last card sent at ${localTime}.`);
+  } catch (err) {
+    console.error("Notification failed:", err);
+    updateWidgetStatus("Could not send card notification.");
+  }
+}
+
+async function setWidgetEnabled(enabled) {
+  if (enabled) {
+    if (!("Notification" in window)) {
+      alert("Notifications are not supported on this browser.");
+      widgetToggle.checked = false;
+      updateWidgetStatus("Notifications are not supported on this device.");
+      return;
+    }
+
+    if (Notification.permission !== "granted") {
+      const permission = await Notification.requestPermission();
+      if (permission !== "granted") {
+        widgetToggle.checked = false;
+        widgetPrefs.enabled = false;
+        saveWidgetPrefs();
+        updateWidgetStatus("Permission denied. Please allow notifications to use weather cards.");
+        return;
+      }
+    }
+
+    widgetPrefs.enabled = true;
+    saveWidgetPrefs();
+    updateWidgetStatus("Weather card notifications are ON.");
+    sendWeatherWidgetNotification(true);
+    return;
+  }
+
+  widgetPrefs.enabled = false;
+  saveWidgetPrefs();
+  updateWidgetStatus("Widget notifications are off.");
+}
+
+function initWidgetControls() {
+  loadWidgetPrefs();
+  if (widgetToggle) {
+    widgetToggle.checked = widgetPrefs.enabled;
+    widgetToggle.addEventListener("change", () => {
+      setWidgetEnabled(widgetToggle.checked);
+    });
+  }
+
+  if (widgetFrequency) {
+    widgetFrequency.value = String(widgetPrefs.frequencyMinutes);
+    widgetFrequency.addEventListener("change", () => {
+      widgetPrefs.frequencyMinutes = Number(widgetFrequency.value) || 60;
+      saveWidgetPrefs();
+      updateWidgetStatus(`Update frequency set to ${widgetPrefs.frequencyMinutes} minutes.`);
+    });
+  }
+
+  if (testWidgetNotificationBtn) {
+    testWidgetNotificationBtn.addEventListener("click", () => {
+      sendWeatherWidgetNotification(true);
+    });
+  }
+
+  if (widgetPrefs.enabled) {
+    if (Notification.permission === "granted") {
+      updateWidgetStatus("Weather card notifications are ON.");
+    } else if (Notification.permission === "denied") {
+      widgetPrefs.enabled = false;
+      if (widgetToggle) widgetToggle.checked = false;
+      saveWidgetPrefs();
+      updateWidgetStatus("Notification permission is blocked in browser settings.");
+    } else {
+      updateWidgetStatus("Turn ON and allow permission to start weather cards.");
+    }
+  } else {
+    updateWidgetStatus("Widget notifications are off.");
+  }
+}
 
 dateEl.textContent = formatToday();
 
@@ -324,6 +479,7 @@ async function loadWeatherForCity(city) {
     updateCurrentUI(current);
     renderHourly(forecast);
     renderDaily(forecast);
+    sendWeatherWidgetNotification(false);
 
     setLoading(false);
   } catch (err) {
@@ -626,6 +782,11 @@ const locationBtn = document.getElementById("location-btn");
 if (locationBtn) {
   locationBtn.addEventListener("click", loadWeatherByLocation);
 }
+
+initWidgetControls();
+setInterval(() => {
+  sendWeatherWidgetNotification(false);
+}, 60000);
 
 function setupInstallPrompt() {
   const PROMPT_DISMISSED_KEY = "skysenseInstallDismissed";
