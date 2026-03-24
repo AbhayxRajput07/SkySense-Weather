@@ -875,4 +875,37 @@ function setupInstallPrompt() {
 
 setupInstallPrompt();
 
-loadWeatherForCity(DEFAULT_CITY);
+function loadWeatherOnStart() {
+  if (!navigator.geolocation) {
+    loadWeatherForCity(DEFAULT_CITY);
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const { latitude, longitude } = position.coords;
+      const geoUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
+
+      fetch(geoUrl)
+        .then((res) => res.json())
+        .then((data) => {
+          const city = data.address?.city || data.address?.town || data.address?.village || "Unknown";
+          if (city !== "Unknown") {
+            loadWeatherForCity(city);
+          } else {
+            loadWeatherForCity(DEFAULT_CITY);
+          }
+        })
+        .catch((err) => {
+          console.error("Reverse geocode failed on start:", err);
+          loadWeatherForCity(DEFAULT_CITY);
+        });
+    },
+    (error) => {
+      console.error("Geolocation error on start:", error.message);
+      loadWeatherForCity(DEFAULT_CITY);
+    }
+  );
+}
+
+loadWeatherOnStart();
