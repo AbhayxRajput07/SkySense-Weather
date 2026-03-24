@@ -1,10 +1,11 @@
-const CACHE_NAME = "skysense-v6";
+const CACHE_NAME = "skysense-v7";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./style.css",
   "./script.js",
   "./manifest.json",
+  "./vercel.json",
   "./icon-192.png",
   "./icon-512.png",
   "./app/index.html",
