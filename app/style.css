@@ -3,20 +3,20 @@
 }
 
 :root {
-  --bg: #f3f6fb;
-  --bg-soft: #eef3f9;
+  --bg: #f5f7fb;
+  --bg-soft: #f1f4f9;
   --surface: #ffffff;
-  --surface-alt: #f7f9fc;
-  --ink: #10233f;
-  --ink-muted: #607089;
-  --line: #d7e0ec;
-  --line-strong: #bed0e4;
-  --accent: #0b78f2;
-  --accent-strong: #045dbe;
+  --surface-alt: #f8fafd;
+  --ink: #1a2a40;
+  --ink-muted: #6b7c93;
+  --line: #dbe3ee;
+  --line-strong: #c8d5e6;
+  --accent: #2f6fe4;
+  --accent-strong: #2558b3;
   --success: #0f9d73;
-  --radius-lg: 18px;
+  --radius-lg: 16px;
   --radius-md: 12px;
-  --shadow-soft: 0 16px 34px rgba(21, 42, 77, 0.08);
+  --shadow-soft: 0 12px 28px rgba(19, 34, 60, 0.07);
 }
 
 html,
@@ -26,9 +26,10 @@ body {
   font-family: "Manrope", "Segoe UI", sans-serif;
   color: var(--ink);
   background:
-    radial-gradient(circle at 0% 0%, #dde9fb 0%, transparent 38%),
-    radial-gradient(circle at 100% 0%, #deefff 0%, transparent 40%),
+    radial-gradient(circle at 0% 0%, #eaf0fb 0%, transparent 34%),
+    radial-gradient(circle at 100% 0%, #edf4ff 0%, transparent 36%),
     var(--bg);
+  line-height: 1.35;
 }
 
 a {
@@ -37,12 +38,12 @@ a {
 }
 
 .app {
-  max-width: 1200px;
+  max-width: 1180px;
   margin: 0 auto;
-  padding: 20px;
+  padding: clamp(12px, 2vw, 20px);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 
 .card {
@@ -54,10 +55,10 @@ a {
 
 .top-bar {
   display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 14px;
+  grid-template-columns: minmax(170px, auto) 1fr auto;
+  gap: 12px;
   align-items: center;
-  padding: 14px;
+  padding: 12px;
 }
 
 .branding {
@@ -67,26 +68,26 @@ a {
 }
 
 .branding-icon {
-  width: 42px;
-  height: 42px;
+  width: 38px;
+  height: 38px;
   display: grid;
   place-items: center;
   border-radius: 999px;
-  font-size: 1.4rem;
+  font-size: 1.25rem;
   color: #fff;
-  background: linear-gradient(140deg, #0b78f2, #28a1ff);
+  background: linear-gradient(140deg, #2f6fe4, #4f8cf3);
 }
 
 .app-name {
   margin: 0;
-  font-size: 1.05rem;
-  font-weight: 800;
+  font-size: 1rem;
+  font-weight: 700;
   letter-spacing: 0.01em;
 }
 
 .app-tagline {
   margin: 2px 0 0;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: var(--ink-muted);
 }
 
@@ -115,7 +116,7 @@ a {
   width: 100%;
   border: 0;
   outline: 0;
-  padding: 11px 0;
+  padding: 10px 0;
   background: transparent;
   color: var(--ink);
   font-size: 0.9rem;
@@ -128,11 +129,11 @@ a {
 .primary-btn {
   border: 0;
   border-radius: 999px;
-  background: linear-gradient(130deg, var(--accent), #1e90ff);
+  background: linear-gradient(130deg, var(--accent), #5e8ff0);
   color: #fff;
   padding: 0 14px;
-  font-size: 0.84rem;
-  font-weight: 700;
+  font-size: 0.8rem;
+  font-weight: 600;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -154,9 +155,9 @@ a {
 .chip {
   border-radius: 999px;
   border: 1px solid transparent;
-  padding: 8px 12px;
+  padding: 7px 11px;
   font-size: 0.78rem;
-  font-weight: 700;
+  font-weight: 600;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -175,13 +176,13 @@ a {
 
 .chip-filled {
   color: var(--accent-strong);
-  background: #e8f2ff;
-  border-color: #cde2fd;
+  background: #ecf2fd;
+  border-color: #d4e1f7;
 }
 
 .layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(320px, 1fr);
+  grid-template-columns: minmax(0, 1.7fr) minmax(310px, 1fr);
   gap: 14px;
 }
 
@@ -194,7 +195,7 @@ a {
 }
 
 .current-weather-card {
-  padding: 16px;
+  padding: 14px;
 }
 
 .current-header {
@@ -207,15 +208,16 @@ a {
 
 .label {
   margin: 0;
-  font-size: 0.74rem;
-  letter-spacing: 0.03em;
+  font-size: 0.72rem;
+  letter-spacing: 0.01em;
   color: var(--ink-muted);
-  text-transform: uppercase;
+  text-transform: none;
 }
 
 .city-name {
   margin: 6px 0 0;
-  font-size: 1.38rem;
+  font-size: 1.28rem;
+  font-weight: 700;
   line-height: 1.1;
 }
 
@@ -257,8 +259,8 @@ a {
 
 .temp-now {
   display: block;
-  font-size: 3rem;
-  font-weight: 800;
+  font-size: clamp(2.3rem, 5.5vw, 2.8rem);
+  font-weight: 700;
   letter-spacing: -0.04em;
   line-height: 1;
 }
@@ -301,7 +303,7 @@ a {
 .metric-value {
   margin: 1px 0 0;
   font-size: 0.82rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .card-header {
@@ -315,7 +317,8 @@ a {
 
 .card-header h3 {
   margin: 0;
-  font-size: 0.92rem;
+  font-size: 0.88rem;
+  font-weight: 600;
 }
 
 .hourly-list {
@@ -352,7 +355,7 @@ a {
 .hour-temp {
   margin: 0 0 2px;
   font-size: 0.83rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .daily-list {
@@ -393,7 +396,7 @@ a {
 }
 
 .day-temp-range {
-  font-weight: 700;
+  font-weight: 600;
   font-size: 0.82rem;
 }
 
@@ -412,7 +415,7 @@ a {
 .widget-title {
   margin: 0;
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .widget-note {
@@ -502,7 +505,7 @@ a {
   max-height: 320px;
   overflow-y: auto;
   padding: 12px 14px;
-  background: linear-gradient(180deg, #fafcff, #f4f8ff);
+  background: linear-gradient(180deg, #fbfcff, #f7faff);
   border-bottom: 1px solid var(--line);
 }
 
@@ -520,8 +523,8 @@ a {
 }
 
 .ai-message-user {
-  background: #eaf3ff;
-  border: 1px solid #c9dffd;
+  background: #eef4ff;
+  border: 1px solid #d7e4fa;
   margin-left: 32px;
 }
 
@@ -587,8 +590,8 @@ a {
 }
 
 .primary-icon-button {
-  border-color: #b8d6ff;
-  background: #e8f2ff;
+  border-color: #c9dbf6;
+  background: #edf3fd;
   color: var(--accent-strong);
 }
 
@@ -663,10 +666,12 @@ a {
 @media (max-width: 1040px) {
   .top-bar {
     grid-template-columns: 1fr;
+    align-items: stretch;
   }
 
   .top-actions {
     justify-content: flex-start;
+    flex-wrap: wrap;
   }
 
   .layout {
@@ -676,7 +681,16 @@ a {
 
 @media (max-width: 640px) {
   .app {
-    padding: 12px;
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .card {
+    border-radius: 14px;
+  }
+
+  .top-bar {
+    padding: 10px;
   }
 
   .search-bar {
@@ -686,7 +700,16 @@ a {
   .primary-btn {
     width: 100%;
     justify-content: center;
-    min-height: 38px;
+    min-height: 40px;
+  }
+
+  .top-actions {
+    width: 100%;
+  }
+
+  .top-actions .chip {
+    flex: 1;
+    justify-content: center;
   }
 
   .current-main {
@@ -694,10 +717,16 @@ a {
   }
 
   .current-metrics {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
   }
 
   .ai-message-user {
-    margin-left: 12px;
+    margin-left: 8px;
+  }
+
+  .install-tab {
+    width: calc(100vw - 16px);
+    right: 8px;
+    bottom: 8px;
   }
 }
